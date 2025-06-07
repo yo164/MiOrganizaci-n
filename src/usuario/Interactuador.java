@@ -25,10 +25,70 @@ public interface Interactuador {
     // Consulta ordenada de empleados 
     public static void consultaOrdenada() {
         // TODO: Declaración e inicialización a null del ArrayList donde guardaremos el resultado de la consulta
+        ArrayList<Empleado> resultado = new ArrayList<>();
         // TODO: Petición al usuario de los criterios de ordenación.
 
+        System.out.println("Introduzca el criterio de ordenación");
+        System.out.println("1. Ordenar por Id");
+        System.out.println("2. Ordenar por Nombre");
+        System.out.println("3. Ordenar por Apellido");
+        System.out.println("4. Ordenar por Cargo");
+        System.out.println("5. Ordenar por Id del Jefe");
+
+        int opcion = solicitarElección(5);
+
+        String ordenadoPor = "";
+        switch (opcion) {
+            case 1:
+                ordenadoPor = "ID";
+                break;
+            case 2:
+                ordenadoPor = "nombre";
+                break;
+            case 3:
+                ordenadoPor = "apellido";
+                break;
+            case 4:
+                ordenadoPor = "cargo";
+                break;
+            case 5:
+                ordenadoPor = "jefe_id";
+                break;
+        
+            default:
+                break;
+        }
+
+        System.out.println("Indique si quiere la lista en orden ascendente o descendente");
+        System.out.println("1. Ascendente");
+        System.out.println("2. Descedente");
+
+        opcion = solicitarElección(2);
+
+        switch (opcion) {
+            case 1:
+                ordenadoPor += "";
+                break;
+            case 2:
+                ordenadoPor += " DESC";
+                break;
+        
+            default:
+                break;
+        }
+
+
         try{     
-            // TODO: Solicitud al gestor, comprobación del resultado y muestra de mensaje de error o listado de empleados.             
+            // TODO: Solicitud al gestor, comprobación del resultado y muestra de mensaje de error o listado de empleados.  
+            resultado = miGestor.requestAll(ordenadoPor);
+            if (resultado != null) {
+                for (Empleado empleado : resultado) {
+                    System.out.println(empleado.toString());
+                }
+            }
+            
+            
+            
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -36,12 +96,18 @@ public interface Interactuador {
 
     // Consulta de datos por ID
     public static void consultaPorIdentificador() { 
-        // TODO: Petición al usuario del identificador del empleado (preferentemente usando la función solicitarValorNumérico). 
+        // TODO: Petición al usuario del identificador del empleado (preferentemente usando la función solicitarValorNumérico).
+        System.out.println("Introduzca el Id del Empleado que quiere consultar");
+        int idEmpleado = (Integer) solicitarValorNumérico(Integer.class);
 
         try{
             // TODO: Solicitud al gestor, comprobación del resultado y muestra de mensaje de error o datos del empleado. 
+            Empleado empleado = miGestor.requestById(idEmpleado);
+            if (empleado != null) {
+                System.out.println(empleado.toString());
+            }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println(e.getMessage()+ "terrible mistke");
         }
     }
 
@@ -151,13 +217,33 @@ public interface Interactuador {
     
     // Baja de un empleado
     public static void consultarSubordinados() { 
-        // TODO: Declaración e inicialización a null del ArrayList donde guardaremos el resultado de la consulta 
+        // TODO: Declaración e inicialización a null del ArrayList donde guardaremos el resultado de la consulta
+        ArrayList<Empleado> empleados = null; 
+        ArrayList<Integer> empleadosaux = new ArrayList<>();
         
         
         // TODO: Petición al usuario del identificador del empleado (preferentemente usando la función solicitarValorNumérico).  
-        
+
+        System.out.println("Introduzca el Id del Empleado cuyos subordiandos quiere ver");
+
+        int idJefe = (Integer) solicitarValorNumérico(Integer.class);
+        int idJefeaux = 0;
         try{      
             // TODO: Solicitud al gestor, comprobación del resultado y muestra de mensaje de error o listado de empleados. 
+            empleados = miGestor.consultarSubordinados(idJefe);
+            
+            for (Empleado empleado : empleados) {
+                empleadosaux.add(empleado.getId());
+            }
+
+            
+
+            if (empleados != null) {
+                for (Empleado empleado : empleados) {
+                    System.out.println(empleado.toString());
+
+                }
+            }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

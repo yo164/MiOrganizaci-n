@@ -23,7 +23,7 @@ public class GestorEmpleados implements CRUD<Empleado>, ÁrbolJerárquico<Emplea
         ArrayList<Empleado> result = new ArrayList<>();
         // TODO: Construcción de la consulta SQL (incluyendo criterio de ordenación si
         // lo hubiera)
-        String consultaSql = "SELECT * FROM empleado";
+        String consultaSql = "SELECT * FROM empleados";
         if (sortedBy != null && !sortedBy.trim().isEmpty()) {
             consultaSql += " ORDER BY " + sortedBy + ";";
         } else {
@@ -42,7 +42,7 @@ public class GestorEmpleados implements CRUD<Empleado>, ÁrbolJerárquico<Emplea
                         resultados.getInt("ID"),
                         resultados.getString("nombre"),
                         resultados.getString("apellido"),
-                        resultados.getString("carto"),
+                        resultados.getString("cargo"),
                         resultados.getInt("jefe_id"));
 
                 result.add(empleado);
@@ -61,7 +61,7 @@ public class GestorEmpleados implements CRUD<Empleado>, ÁrbolJerárquico<Emplea
         Empleado result = null;
 
         // TODO: Construcción de la consulta SQL
-        String consultaSql = "SELECT * FROM  empleado WHERE id = ?";
+        String consultaSql = "SELECT * FROM  empleados WHERE id = ?";
         try (PreparedStatement stmt = this.conn.prepareStatement(consultaSql)) {
             // TODO: Terminar de construir stmt
             stmt.setInt(1, idEmpleado);
